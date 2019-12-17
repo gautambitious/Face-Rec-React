@@ -4,9 +4,11 @@ import Navigation from '../components/navigation/Navigation';
 import Logo from '../components/logo/Logo';
 import ImageLinkForm from '../components/imagelinkform/ImageLinkForm';
 import Rank from '../components/rank/Rank';
+import Signin from '../components/signin/Signin';
 import Particles from 'react-particles-js';
 import Clarifai from 'clarifai';
 import FaceRecognition from '../components/facerecognition/FaceRecognition';
+import Register from '../components/register/Register';
 
 const app=new Clarifai.App({
   apiKey: 'a9abbd92fbf945b6a32963e954d1346e'
@@ -31,12 +33,24 @@ class App extends Component{
     this.state = {
       input : '',
       imageURL : '',
-      box:{}
+      box:{},
+      isSignedIn: false,
+      route: 'signin'
     }
   }
 
   onInputChange = (event) => {
     this.setState({input: event.target.value})
+  }
+
+  onRouteChanged = (route) => {
+    this.setState({route: route})
+    if(route === 'home'){
+      this.setState({isSignedIn: true})
+    }
+    else{
+      this.setState({isSignedIn: false})
+    }
   }
 
   calculateFaceLoc = (data) => {
@@ -61,18 +75,47 @@ class App extends Component{
   }
 
   render(){
-  return (
-    <div className="App">
-      <Particles className='particles'
-              params={particleParams}
+    const { route, imageURL, box, isSignedIn } = this.state
+
+    if(route==='home'){
+      return (
+        <div className="App">
+          <Particles
+            className='particles'
+            params={particleParams}
             />
-      <Navigation />
-      <Logo />
-      <Rank />
-      <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}/>
-      <FaceRecognition imageURL={this.state.imageURL} box={this.state.box}/>
-    </div>
-  );
+          <Navigation route={route} onRouteChanged={this.onRouteChanged} />
+          <Logo />
+          <Rank />
+          <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}/>
+          <FaceRecognition imageURL={this.state.imageURL} box={this.state.box}/>
+        </div>
+      )
+    }
+    else if(route === 'signin'){
+      return (
+        <div className='App'>
+          <Particles
+            className='particles'
+            params={particleParams}
+          />
+          <Navigation route={route} onRouteChanged={this.onRouteChanged} />
+          <Signin onRouteChanged={this.onRouteChanged}/ >
+        </div>
+      );
+    }
+    else{
+    return (
+      <div className='App'>
+        <Particles
+          className='particles'
+          params={particleParams}
+        />
+        <Navigation route={route} onRouteChanged={this.onRouteChanged} />
+        <Register onRouteChanged={this.onRouteChanged}/>
+      </div>
+    );
+  }
 }}
 
 export default App;
