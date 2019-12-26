@@ -21,19 +21,19 @@ class Register extends React.Component {
   onButtonSubmit = () => {
     const {name, password, email} = this.state
     fetch("http://localhost:5000/register", {
-      method: "POST",
+      method: 'POST',
       headers: {
         "Content-Type": "application/json"
       },
-      body: {
+      body: JSON.stringify({
         name: name,
         password: password,
         email: email
-      }
+      })
     }).then((res) => res.json())
     .then((res) => {
       if(res === "success"){
-        this.onRouteChanged('home');
+        this.props.onRouteChanged('home');
       }
     })
     .catch(console.log)

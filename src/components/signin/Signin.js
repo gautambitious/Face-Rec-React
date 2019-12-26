@@ -27,7 +27,7 @@ class Signin extends Component{
       body: data})
     .then((res) => res.json())
     .then((res) => {
-      if(res == "done"){
+      if(res === "done"){
         this.props.onRouteChanged("home")
       }
     })
