@@ -35,7 +35,9 @@ class App extends Component{
       imageURL : '',
       box:{},
       isSignedIn: false,
-      route: 'signin'
+      route: 'signin',
+      name: "name",
+      userId: 0
     }
   }
 
@@ -51,6 +53,9 @@ class App extends Component{
     else{
       this.setState({isSignedIn: false})
     }
+  }
+  onRouteChanged2 = (route, user) => {
+
   }
 
   calculateFaceLoc = (data) => {
